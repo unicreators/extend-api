@@ -1,0 +1,34 @@
+{
+	"name": "extend-api",
+	"version": "1.0.0",
+	"description": "extend api.",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"test": "mocha test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/unicreators/extend-api.git"
+	},
+	"keywords": [
+		"web api",		
+		"extend",
+		"api"
+	],
+	"author": "yichen",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/unicreators/extend-api/issues"
+	},
+	"homepage": "https://github.com/unicreators/extend-api#readme",
+	"dependencies": {
+		"request-promise-native": "^1.0.4"
+	},
+	"devDependencies": {
+		"koa": "^2.3.0",
+		"mocha": "^3.5.0"
+	}
+}
