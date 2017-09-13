@@ -12,10 +12,10 @@ module.exports = class ApiExtend {
         this.api = api;
     }
 
-    async invoke(url, opts = undefined, method = undefined) {
+    async invoke(url, opts = undefined, method = undefined, ctx = undefined) {
         if (typeof url == 'string') url = { url };
         if (method != undefined) url = Object.assign(url, { method });
-        return await this.api.invoke(url.url, opts, url.method);
+        return await this.api.invoke(url.url, opts, url.method, ctx);
     }
 
 };

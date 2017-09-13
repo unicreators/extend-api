@@ -31,11 +31,11 @@ module.exports = class Api {
     }
 
     /// virtual
-    async buildApiReqOpts(extendInvokeOpts) { return extendInvokeOpts; }
-    async afterInvoke(result, reqOpts) { return result; }
+    async buildApiReqOpts(extendInvokeOpts, ctx) { return extendInvokeOpts; }
+    async afterInvoke(result, reqOpts, ctx) { return result; }
 
     /// virtual
-    normalizeOpts(url, opts, method = 'GET') {
+    normalizeOpts(url, opts, method, ctx) {
         // default
         let defOpts = { json: true };
         return Object.assign(defOpts, opts, { url, method });
@@ -49,11 +49,13 @@ module.exports = class Api {
     /// 
     /// method (default 'GET')
     ///
-    async invoke(url, opts, method = 'GET') {
-        let extendInvokeOpts = this.normalizeOpts(url, opts, method);
-        let reqOpts = (await this.buildApiReqOpts(extendInvokeOpts)) || extendInvokeOpts;
+    /// ctx (custom ctx)
+    ///
+    async invoke(url, opts, method = 'GET', ctx = undefined) {
+        let extendInvokeOpts = this.normalizeOpts(url, opts, method, ctx);
+        let reqOpts = (await this.buildApiReqOpts(extendInvokeOpts, ctx)) || extendInvokeOpts;
         let result = await request(reqOpts);
-        return this.afterInvoke ? (await this.afterInvoke(result, reqOpts)) : result;
+        return this.afterInvoke ? (await this.afterInvoke(result, ctx, reqOpts)) : result;
     }
 
 

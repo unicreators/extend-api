@@ -119,4 +119,41 @@ describe('api.test.js', function () {
     });
 
 
+    it('invoke (custom ctx)', async function () {
+        
+        // custom api
+        let CustomApi = class customApi extends Api {
+
+            constructor(token) { super(); this.token = token; }
+
+            async buildApiReqOpts(extendInvokeOpts) {
+                extendInvokeOpts.qs = Object.assign({ token: this.token }, extendInvokeOpts.qs);
+                return extendInvokeOpts;
+            }
+
+            async afterInvoke(result, ctx, reqOpts) {
+                if (ctx && ctx.extract)
+                    return result && result.query;
+                return result;
+            }
+
+        };
+
+
+        // custom extend
+        let customExtend = class customExtend extends ApiExtend {
+            async getData(version) {
+                return await this.invoke(server_url, { qs: { v: version } }, undefined, { extract: true });
+            }
+        };
+
+        let api = new CustomApi('qwer');
+        api.extend('extend1', customExtend);
+
+        let result = await api.extend1.getData('v1');
+        assert(result && result.v == 'v1');
+
+    });
+
+
 });
